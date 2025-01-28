@@ -53,14 +53,53 @@
         <p>We are Trilogy, Stay tuned for more updates and new releases!</p>
     </section>
 
-    <section id="updates">
-        <h2>Get Updates</h2>
-        <form class="email-form" action="#" method="post">
-            <label for="email">Subscribe to our music updates:</label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-            <input type="submit" value="Subscribe">
-        </form>
-    </section>
+    ...
+<section id="updates">
+    <h2>Get Updates</h2>
+    <form class="email-form" id="subscribeForm" action="#" method="post">
+        <label for="email">Subscribe to our music updates:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <input type="submit" value="Subscribe">
+    </form>
+</section>
+...
+<script>
+    document.getElementById('subscribeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const url = 'https://api.brevo.com/v3/contacts';
+        const headers = {
+            'accept': 'application/json',
+            'api-key': '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',
+            'content-type': 'application/json'
+        };
+        const data = {
+            email: email,
+            ext_id: 'externalId',
+            emailBlacklisted: false,
+            smsBlacklisted: false,
+            listIds: [36],
+            updateEnabled: false,
+        };
+
+        fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert('Subscription successful!');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Subscription failed.');
+        });
+    });
+</script>
+...
 
     <section id="music">
         <h2>Our Music</h2>
